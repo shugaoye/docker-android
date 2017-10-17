@@ -28,7 +28,7 @@ MAINTAINER Roger Ye <shugaoye@yahoo.com>
 
 RUN apt-get update
 
-ENV PACKAGES git make vim-common vim-tiny \
+ENV PACKAGES git make vim-common vim-tiny wget curl \
     xterm telnet mc inetutils-ping openssh-server net-tools expect
 RUN apt-get update \
     && apt-get -y install $PACKAGES
@@ -49,36 +49,121 @@ CMD    ["/usr/sbin/sshd", "-D"]
 # considered to be ephemeral
 VOLUME ["/tmp/ccache", "/home/aosp"]
 
-# Install Android Studio
-ENV VERSION_SDK_TOOLS "3859397"
-ENV VERSION_ANDROID_STUDIO "162.4069837"
+#
+# Beginning of SDK installation
+#
+RUN cd /opt && wget -q https://dl.google.com/android/android-sdk_r24.4.1-linux.tgz -O android-sdk.tgz
+RUN cd /opt && tar -xvzf android-sdk.tgz
+RUN cd /opt && rm -f android-sdk.tgz
 
-ENV ANDROID_HOME "/opt/android-sdk-linux"
-ENV PATH "$PATH:${ANDROID_HOME}/tools"
+ENV PATH ${PATH}:${ANDROID_SDK_HOME}/tools:${ANDROID_SDK_HOME}/platform-tools:/root/bin
 
-ENV AS_URL="https://dl.google.com/dl/android/studio/ide-zips/2.3.3.0/android-studio-ide-${VERSION_ANDROID_STUDIO}-linux.zip"
-RUN curl $AS_URL > /tmp/studio.zip && \
-    unzip -d /opt /tmp/studio.zip && \
-    rm /tmp/studio.zip
+# ------------------------------------------------------
+# --- Install Android SDKs and other build packages
 
-ENV SDK_URL="https://dl.google.com/android/repository/sdk-tools-linux-${VERSION_SDK_TOOLS}.zip"
-RUN curl $SDK_URL > /tmp/sdk.zip && \
-    unzip -d ${ANDROID_HOME} /tmp/sdk.zip && \
-    rm /tmp/sdk.zip
+# Other tools and resources of Android SDK
+#  you should only install the packages you need!
+# To get a full list of available options you can use:
+#  android list sdk --no-ui --all --extended
+# (!!!) Only install one package at a time, as "echo y" will only work for one license!
+#       If you don't do it this way you might get "Unknown response" in the logs,
+#         but the android SDK tool **won't** fail, it'll just **NOT** install the package.
+RUN echo y | android update sdk --no-ui --all --filter platform-tools | grep 'package installed'
+#RUN echo y | android update sdk --no-ui --all --filter extra-android-support | grep 'package installed'
 
-RUN mkdir -p $ANDROID_HOME/licenses/ \
-  && echo "8933bad161af4178b1185d1a37fbf41ea5269c55\nd56f5187479451eabf01fb78af6dfcb131a6481e" > $ANDROID_HOME/licenses/android-sdk-license \
-  && echo "84831b9409646a918e30573bab4c9c91346d8abd" > $ANDROID_HOME/licenses/android-sdk-preview-license
+# SDKs
+# Please keep these in descending order!
+RUN echo y | android update sdk --no-ui --all --filter android-26 | grep 'package installed'
+RUN echo y | android update sdk --no-ui --all --filter android-25 | grep 'package installed'
+RUN echo y | android update sdk --no-ui --all --filter android-24 | grep 'package installed'
+RUN echo y | android update sdk --no-ui --all --filter android-23 | grep 'package installed'
+RUN echo y | android update sdk --no-ui --all --filter android-18 | grep 'package installed'
+RUN echo y | android update sdk --no-ui --all --filter android-16 | grep 'package installed'
 
-ADD scripts/packages.txt /root/packages.txt
-ADD scripts/android-accept-licenses.sh /root/android-accept-licenses.sh
-RUN mkdir -p /root/.android && \
-  touch /root/.android/repositories.cfg 
+# build tools
+# Please keep these in descending order!
+RUN echo y | android update sdk --no-ui --all --filter build-tools-26.0.2 | grep 'package installed'
+RUN echo y | android update sdk --no-ui --all --filter build-tools-26.0.1 | grep 'package installed'
+RUN echo y | android update sdk --no-ui --all --filter build-tools-26.0.0 | grep 'package installed'
+RUN echo y | android update sdk --no-ui --all --filter build-tools-25.0.3 | grep 'package installed'
+RUN echo y | android update sdk --no-ui --all --filter build-tools-25.0.2 | grep 'package installed'
+RUN echo y | android update sdk --no-ui --all --filter build-tools-25.0.1 | grep 'package installed'
+RUN echo y | android update sdk --no-ui --all --filter build-tools-25.0.0 | grep 'package installed'
+RUN echo y | android update sdk --no-ui --all --filter build-tools-24.0.3 | grep 'package installed'
+RUN echo y | android update sdk --no-ui --all --filter build-tools-24.0.2 | grep 'package installed'
+RUN echo y | android update sdk --no-ui --all --filter build-tools-24.0.1 | grep 'package installed'
+RUN echo y | android update sdk --no-ui --all --filter build-tools-23.0.3 | grep 'package installed'
+RUN echo y | android update sdk --no-ui --all --filter build-tools-23.0.2 | grep 'package installed'
+RUN echo y | android update sdk --no-ui --all --filter build-tools-23.0.1 | grep 'package installed'
 
-RUN ["/root/android-accept-licenses.sh", "/opt/android-sdk-linux/tools/bin/sdkmanager --update --verbose"]
+# Android System Images, for emulators
+# Please keep these in descending order!
+#RUN echo y | android update sdk --no-ui --all --filter sys-img-x86_64-android-25 | grep 'package installed'
+#RUN echo y | android update sdk --no-ui --all --filter sys-img-x86-android-25 | grep 'package installed'
+#RUN echo y | android update sdk --no-ui --all --filter sys-img-armeabi-v7a-android-25 | grep 'package installed'
 
-RUN while read -r package; do SDK_PACKAGES="${SDK_PACKAGES}${package} "; done < /root/packages.txt && \
-    ${ANDROID_HOME}/tools/bin/sdkmanager --verbose ${SDK_PACKAGES}
+RUN echo y | android update sdk --no-ui --all --filter sys-img-x86_64-android-24 | grep 'package installed'
+RUN echo y | android update sdk --no-ui --all --filter sys-img-x86-android-24 | grep 'package installed'
+RUN echo y | android update sdk --no-ui --all --filter sys-img-armeabi-v7a-android-24 | grep 'package installed'
+
+#RUN echo y | android update sdk --no-ui --all --filter sys-img-x86-android-23 | grep 'package installed'
+#RUN echo y | android update sdk --no-ui --all --filter sys-img-armeabi-v7a-android-23 | grep 'package installed'
+
+# Extras
+RUN echo y | android update sdk --no-ui --all --filter extra-android-m2repository | grep 'package installed'
+RUN echo y | android update sdk --no-ui --all --filter extra-google-m2repository | grep 'package installed'
+RUN echo y | android update sdk --no-ui --all --filter extra-google-google_play_services | grep 'package installed'
+
+# install those?
+
+# build-tools-21.0.0
+#build-tools-21.0.1
+#build-tools-21.0.2
+#build-tools-21.1.0
+#build-tools-21.1.1
+#build-tools-21.1.2
+#build-tools-22.0.0
+#build-tools-22.0.1
+#build-tools-23.0.0
+#build-tools-23.0.1
+#build-tools-23.0.2
+#build-tools-23.0.3
+#build-tools-24.0.0
+#build-tools-24.0.1
+#build-tools-24.0.2
+#android-21
+#android-22
+#android-23
+#android-24
+#addon-google_apis-google-24
+#addon-google_apis-google-23
+#addon-google_apis-google-22
+#addon-google_apis-google-21
+#extra-android-support
+#extra-android-m2repository
+#extra-google-m2repository
+#extra-google-google_play_services
+#sys-img-arm64-v8a-android-24
+#sys-img-armeabi-v7a-android-24
+#sys-img-x86_64-android-24
+#sys-img-x86-android-24
+
+# google apis
+# Please keep these in descending order!
+#RUN echo y | android update sdk --no-ui --all --filter addon-google_apis-google-23 | grep 'package installed'
+
+# Copy install tools
+COPY scripts /root/bin
+
+#Copy accepted android licenses
+COPY licenses ${ANDROID_SDK_HOME}/licenses
+
+# Update SDK
+RUN /root/bin/android-accept-licenses.sh android update sdk --no-ui --obsolete --force
+
+#
+# End of SDK installation
+#
     
 # Improve rebuild performance by enabling compiler cache
 ENV USE_CCACHE 1
