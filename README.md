@@ -3,9 +3,8 @@ Android Application Development Environment in a Docker Container
 
 # docker-android
 
-[![Docker Stars](https://img.shields.io/docker/stars/kylemanna/aosp.svg)](https://hub.docker.com/r/shugaoye/docker-android/)
-[![Docker Pulls](https://img.shields.io/docker/pulls/kylemanna/aosp.svg)](https://hub.docker.com/r/shugaoye/docker-android/)
-[![ImageLayers](https://images.microbadger.com/badges/image/kylemanna/aosp.svg)](https://microbadger.com/#/images/shugaoye/docker-android)
+[![](https://images.microbadger.com/badges/image/shugaoye/docker-android.svg)](https://microbadger.com/images/shugaoye/docker-android "Get your own image badge on microbadger.com")
+[![](https://images.microbadger.com/badges/version/shugaoye/docker-android.svg)](https://microbadger.com/images/shugaoye/docker-android "Get your own version badge on microbadger.com")
 
 The docker images can be download at:
 https://hub.docker.com/r/shugaoye/docker-android/
