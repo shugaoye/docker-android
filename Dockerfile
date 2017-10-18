@@ -28,8 +28,9 @@ MAINTAINER Roger Ye <shugaoye@yahoo.com>
 
 RUN apt-get update
 
-ENV PACKAGES git make vim-common vim-tiny wget curl \
-    xterm telnet mc inetutils-ping openssh-server net-tools expect
+ENV PACKAGES git make vim-common vim-tiny wget curl libgtk2.0-0 libcanberra-gtk-module \
+    xterm telnet mc inetutils-ping openssh-server net-tools expect \
+    libc6-i386 libncurses5 libstdc++6 lib32z1 libbz2-1.0
 RUN apt-get update \
     && apt-get -y install $PACKAGES
 
@@ -52,6 +53,19 @@ VOLUME ["/tmp/ccache", "/home/aosp"]
 #
 # Beginning of SDK installation
 #
+# Copy install scripts
+COPY scripts /root/scripts
+RUN chmod 755 /root /root/scripts /root/scripts/android-accept-licenses.sh
+
+RUN groupadd -g 2000 -r android
+RUN useradd -u 2000 -M -s /bin/bash -g android android
+RUN chown 2000 /opt
+RUN umask 0002
+
+USER android
+ENV ANDROID_SDK_HOME /opt/android-sdk-linux
+ENV ANDROID_HOME /opt/android-sdk-linux
+
 RUN cd /opt && wget -q https://dl.google.com/android/android-sdk_r24.4.1-linux.tgz -O android-sdk.tgz
 RUN cd /opt && tar -xvzf android-sdk.tgz
 RUN cd /opt && rm -f android-sdk.tgz
@@ -77,7 +91,10 @@ RUN echo y | android update sdk --no-ui --all --filter android-26 | grep 'packag
 RUN echo y | android update sdk --no-ui --all --filter android-25 | grep 'package installed'
 RUN echo y | android update sdk --no-ui --all --filter android-24 | grep 'package installed'
 RUN echo y | android update sdk --no-ui --all --filter android-23 | grep 'package installed'
+RUN echo y | android update sdk --no-ui --all --filter android-22 | grep 'package installed'
+RUN echo y | android update sdk --no-ui --all --filter android-19 | grep 'package installed'
 RUN echo y | android update sdk --no-ui --all --filter android-18 | grep 'package installed'
+RUN echo y | android update sdk --no-ui --all --filter android-17 | grep 'package installed'
 RUN echo y | android update sdk --no-ui --all --filter android-16 | grep 'package installed'
 
 # build tools
@@ -95,6 +112,8 @@ RUN echo y | android update sdk --no-ui --all --filter build-tools-24.0.1 | grep
 RUN echo y | android update sdk --no-ui --all --filter build-tools-23.0.3 | grep 'package installed'
 RUN echo y | android update sdk --no-ui --all --filter build-tools-23.0.2 | grep 'package installed'
 RUN echo y | android update sdk --no-ui --all --filter build-tools-23.0.1 | grep 'package installed'
+RUN echo y | android update sdk --no-ui --all --filter build-tools-19.1.0 | grep 'package installed'
+
 
 # Android System Images, for emulators
 # Please keep these in descending order!
@@ -152,18 +171,17 @@ RUN echo y | android update sdk --no-ui --all --filter extra-google-google_play_
 # Please keep these in descending order!
 #RUN echo y | android update sdk --no-ui --all --filter addon-google_apis-google-23 | grep 'package installed'
 
-# Copy install tools
-COPY scripts /root/bin
-
 #Copy accepted android licenses
 COPY licenses ${ANDROID_SDK_HOME}/licenses
 
 # Update SDK
-RUN /root/bin/android-accept-licenses.sh android update sdk --no-ui --obsolete --force
+RUN /root/scripts/android-accept-licenses.sh android update sdk --no-ui --obsolete --force
 
 #
 # End of SDK installation
 #
+
+USER root
     
 # Improve rebuild performance by enabling compiler cache
 ENV USE_CCACHE 1
@@ -174,6 +192,6 @@ ENV IMG_VERSION=1
 WORKDIR /home/aosp
 
 COPY scripts/bash.bashrc /root/bash.bashrc
-RUN chmod 755 /root /root/bash.bashrc
+RUN chmod 755 /root/bash.bashrc
 COPY scripts/docker_entrypoint.sh /root/docker_entrypoint.sh
 ENTRYPOINT ["/root/docker_entrypoint.sh"]

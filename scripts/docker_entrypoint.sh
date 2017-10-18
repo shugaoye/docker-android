@@ -11,6 +11,7 @@ export USE_CCACHE=1
 msg="docker_entrypoint: Creating user UID/GID [$USER_ID/$GROUP_ID]" && echo $msg
 groupadd -g $GROUP_ID -r aosp && \
 useradd -u $USER_ID --create-home -r -g aosp aosp
+usermod -a -G android aosp
 echo "$msg - done"
 
 # Enable sudo for aosp

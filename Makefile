@@ -40,7 +40,7 @@ all: Dockerfile
 	$(DOCKER) build -t $(IMAGE) .
 
 run:
-	$(DOCKER) run --privileged --name "$(TAG_NAME)_v$(VERSION)" -v /tmp/.X11-unix:/tmp/.X11-unix:ro -v "$(VOL1):/home/aosp" \
+	$(DOCKER) run --privileged --name "$(TAG_NAME)_v$(VERSION)" -v /dev/bus/usb:/dev/bus/usb -v /tmp/.X11-unix:/tmp/.X11-unix:ro -v "$(VOL1):/home/aosp" \
 	-v "$(VOL2):/tmp/ccache" -it -e DISPLAY=$(DISPLAY) -e USER_ID=$(USER_ID) -e GROUP_ID=$(GROUP_ID) \
 	$(IMAGE) /bin/bash
 

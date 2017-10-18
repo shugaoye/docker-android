@@ -113,6 +113,9 @@ if ! shopt -oq posix; then
   fi
 fi
 
+export ANDROID_SDK_HOME=/opt/android-sdk-linux
+export PATH=${PATH}:${ANDROID_SDK_HOME}/tools:${ANDROID_SDK_HOME}/platform-tools:${HOME}/bin
+
 export PS1='\[\e]0;\u@\h: \w\a\]${debian_chroot:+($debian_chroot)}\u@sdk$IMG_VERSION:\w\$ '
 alias xterm1='xterm -fn 9x15 -bg lightgray -fg black -e /bin/bash -i'
 alias xterm2='xterm -fn 9x15 -rv -e /bin/bash -i'
