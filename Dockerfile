@@ -174,8 +174,11 @@ RUN echo y | android update sdk --no-ui --all --filter extra-google-google_play_
 #Copy accepted android licenses
 COPY licenses ${ANDROID_SDK_HOME}/licenses
 
+#
 # Update SDK
-RUN /root/scripts/android-accept-licenses.sh android update sdk --no-ui --obsolete --force
+# May need to this offline, because of the build error.
+#
+# RUN /root/scripts/android-accept-licenses.sh android update sdk --no-ui --obsolete --force
 
 RUN cd /opt && wget -q --output-document=android-ndk.zip https://dl.google.com/android/repository/android-ndk-r15c-linux-x86_64.zip && \
     cd /opt && unzip android-ndk.zip && \
