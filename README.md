@@ -1,5 +1,6 @@
 Android Application Development Environment in a Docker Container
 =================================================================
+(Please use this image with Eclipse/ADT instead of Android Studio)
 
 [![](https://images.microbadger.com/badges/image/shugaoye/docker-android.svg)](https://microbadger.com/images/shugaoye/docker-android "Get your own image badge on microbadger.com")
 [![](https://images.microbadger.com/badges/version/shugaoye/docker-android.svg)](https://microbadger.com/images/shugaoye/docker-android "Get your own version badge on microbadger.com")
@@ -7,7 +8,7 @@ Android Application Development Environment in a Docker Container
 The docker images can be download at:
 https://hub.docker.com/r/shugaoye/docker-android/
 
-# What include in this build
+# What include in this build 
 
 1. Android SDK - android-sdk_r24.4.1-linux
 2. Android NDK - android-ndk-r15c
