@@ -7,11 +7,6 @@ Android Application Development Environment in a Docker Container
 The docker images can be download at:
 https://hub.docker.com/r/shugaoye/docker-android/
 
-#Using adb
-To use adb inside the container, please start the container with the below option:
--v /dev/bus/usb:/dev/bus/usb
+#What include in this build
+Android SDK android-sdk_r24.4.1-linux is used so that we can still use the old android tool.
 
-Don't use adb in the host. Refer to the Makefile about how to start the container.
-
-For a more complicated case about how to use adb inside a container, please refer to
-https://github.com/sorccu/docker-adb
