@@ -27,12 +27,13 @@
 # Both can be defined in your environment, otherwise the below default values
 # will be used.
 
-TAG_NAME ?= ubuntu16.04_android
+TAG_NAME ?= android-25
 VERSION ?= 1
 DOCKER = docker
 IMAGE = shugaoye/docker-android:$(TAG_NAME)
 VOL1 ?= $(HOME)/vol1
 VOL2 ?= $(HOME)/.ccache
+VOL3 ?= /home/android
 USER_ID := $(shell id -u)
 GROUP_ID := $(shell id -g)
 
@@ -40,7 +41,8 @@ all: Dockerfile
 	$(DOCKER) build -t $(IMAGE) .
 
 run:
-	$(DOCKER) run --privileged --name "$(TAG_NAME)_v$(VERSION)" -v /tmp/.X11-unix:/tmp/.X11-unix:ro -v "$(VOL1):/home/aosp" \
+	$(DOCKER) run --privileged --name "$(TAG_NAME)_v$(VERSION)" -v /dev/bus/usb:/dev/bus/usb -v /tmp/.X11-unix:/tmp/.X11-unix:ro -v "$(VOL1):/home/aosp" \
+	-v "$(VOL3):/home/android" \
 	-v "$(VOL2):/tmp/ccache" -it -e DISPLAY=$(DISPLAY) -e USER_ID=$(USER_ID) -e GROUP_ID=$(GROUP_ID) \
 	$(IMAGE) /bin/bash
 

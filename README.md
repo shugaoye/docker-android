@@ -1,12 +1,16 @@
 Android Application Development Environment in a Docker Container
 =================================================================
 
-# docker-android
-
-[![Docker Stars](https://img.shields.io/docker/stars/kylemanna/aosp.svg)](https://hub.docker.com/r/shugaoye/docker-android/)
-[![Docker Pulls](https://img.shields.io/docker/pulls/kylemanna/aosp.svg)](https://hub.docker.com/r/shugaoye/docker-android/)
-[![ImageLayers](https://images.microbadger.com/badges/image/kylemanna/aosp.svg)](https://microbadger.com/#/images/shugaoye/docker-android)
+[![](https://images.microbadger.com/badges/image/shugaoye/docker-android.svg)](https://microbadger.com/images/shugaoye/docker-android "Get your own image badge on microbadger.com")
+[![](https://images.microbadger.com/badges/version/shugaoye/docker-android.svg)](https://microbadger.com/images/shugaoye/docker-android "Get your own version badge on microbadger.com")
 
 The docker images can be download at:
 https://hub.docker.com/r/shugaoye/docker-android/
 
+# What include in this build
+
+1. Android SDK - android-sdk_r24.4.1-linux
+2. Android NDK - android-ndk-r15c
+3. platform-tools
+4. android-18, android-25 and build tools 
+   (minSdkVersion:18 and compileSdkVersion:25)
