@@ -28,7 +28,7 @@
 # will be used.
 
 TAG_NAME ?= android-26
-VERSION ?= 1
+VERSION ?= 1.5
 DOCKER = docker
 IMAGE = shugaoye/docker-android:$(TAG_NAME)
 VOL1 ?= $(HOME)/vol1

@@ -22,22 +22,21 @@
 #******************************************************************************
 #
 
-FROM shugaoye/docker-android:platform-tools
+FROM shugaoye/docker-android:android-18
 
 MAINTAINER Roger Ye <shugaoye@yahoo.com>
 
 #
-# Beginning of platform-tools installation
+# Beginning of installation
 #
 
 RUN echo y | android update sdk --no-ui --all --filter android-26 | grep 'package installed'
+
 RUN echo y | android update sdk --no-ui --all --filter build-tools-26.0.2 | grep 'package installed'
 RUN echo y | android update sdk --no-ui --all --filter build-tools-26.0.1 | grep 'package installed'
 RUN echo y | android update sdk --no-ui --all --filter build-tools-26.0.0 | grep 'package installed'
 
-RUN echo y | android update sdk --no-ui --all --filter android-18 | grep 'package installed'
-
 #
-# End of platform-tools installation
+# End of installation
 #
 
