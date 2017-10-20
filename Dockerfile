@@ -30,9 +30,9 @@ MAINTAINER Roger Ye <shugaoye@yahoo.com>
 # Beginning of installation
 #
 
-RUN echo y | android update sdk --no-ui --all --filter android-22 | grep 'package installed'
+RUN echo y | android update sdk --no-ui --all --filter android-21 | grep 'package installed'
 
-RUN echo y | android update sdk --no-ui --all --filter build-tools-22.0.1 | grep 'package installed'
+RUN echo y | android update sdk --no-ui --all --filter build-tools-21.1.2 | grep 'package installed'
 
 #
 # End of installation
