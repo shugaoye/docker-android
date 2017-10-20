@@ -22,22 +22,17 @@
 #******************************************************************************
 #
 
-FROM shugaoye/docker-android:sdk
+FROM shugaoye/docker-android:ndk
 
 MAINTAINER Roger Ye <shugaoye@yahoo.com>
 
 #
-# Beginning of NDK installation
+# Beginning of platform-tools installation
 #
 
-RUN cd /opt && wget -q --output-document=android-ndk.zip https://dl.google.com/android/repository/android-ndk-r15c-linux-x86_64.zip && \
-    cd /opt && unzip android-ndk.zip && \
-    cd /opt && rm -f android-ndk.zip && \
-    cd /opt && ln -s android-ndk-r15c android-ndk-linux
-
-ENV PATH ${PATH}:/opt/android-ndk-linux
+RUN echo y | android update sdk --no-ui --all --filter platform-tools | grep 'package installed'
 
 #
-# End of NDK installation
+# End of platform-tools installation
 #
 
