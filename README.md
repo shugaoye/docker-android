@@ -7,6 +7,7 @@ Android Application Development Environment in a Docker Container
 The docker images can be download at:
 https://hub.docker.com/r/shugaoye/docker-android/
 
-#What include in this build
+# What include in this build
 Android SDK android-sdk_r24.4.1-linux is used so that we can still use the old android tool.
 
+Android NDK android-ndk-r15c is included in this image.

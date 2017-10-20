@@ -22,64 +22,22 @@
 #******************************************************************************
 #
 
-FROM shugaoye/docker-aosp:ubuntu16.04-JDK8
+FROM shugaoye/docker-android:sdk
 
 MAINTAINER Roger Ye <shugaoye@yahoo.com>
 
-RUN apt-get update
-
-ENV PACKAGES git make vim-common vim-tiny wget curl libgtk2.0-0 libcanberra-gtk-module \
-    xterm telnet mc inetutils-ping openssh-server net-tools expect \
-    libc6-i386 libncurses5 libstdc++6 lib32z1 libbz2-1.0
-RUN apt-get update \
-    && apt-get -y install $PACKAGES
-
-RUN mkdir /var/run/sshd
-RUN export LC_ALL=C
-
-RUN echo 'root:root' | chpasswd
-
-RUN sed -ri 's/^PermitRootLogin\s+.*/PermitRootLogin yes/' /etc/ssh/sshd_config
-RUN sed -ri 's/UsePAM yes/#UsePAM yes/g' /etc/ssh/sshd_config
-
-EXPOSE 22
-
-CMD    ["/usr/sbin/sshd", "-D"]
-
-# The persistent data will be in these two directories, everything else is
-# considered to be ephemeral
-VOLUME ["/tmp/ccache", "/home/aosp"]
-
-# Improve rebuild performance by enabling compiler cache
-ENV USE_CCACHE 1
-ENV CCACHE_DIR /tmp/ccache
-ENV IMG_VERSION=1
-
-COPY scripts/bash.bashrc /root/bash.bashrc
-RUN chmod 755 /root /root/bash.bashrc
-COPY scripts/docker_entrypoint.sh /root/docker_entrypoint.sh
-
 #
-# Beginning of SDK installation
+# Beginning of NDK installation
 #
 
-RUN groupadd -g 2000 -r android
-RUN useradd -u 2000 -M -s /bin/bash -g android android
-RUN chown 2000 /opt
-RUN umask 0002
+RUN cd /opt && wget -q --output-document=android-ndk.zip https://dl.google.com/android/repository/android-ndk-r15c-linux-x86_64.zip && \
+    cd /opt && unzip android-ndk.zip && \
+    cd /opt && rm -f android-ndk.zip && \
+    cd /opt && ln -s android-ndk-r15c android-ndk-linux
 
-USER android
-ENV ANDROID_SDK_HOME /opt/android-sdk-linux
-ENV ANDROID_HOME /opt/android-sdk-linux
-
-RUN cd /opt && wget -q https://dl.google.com/android/android-sdk_r24.4.1-linux.tgz -O android-sdk.tgz
-RUN cd /opt && tar -xvzf android-sdk.tgz
-RUN cd /opt && rm -f android-sdk.tgz
-
-ENV PATH ${PATH}:${ANDROID_SDK_HOME}/tools:${ANDROID_SDK_HOME}/platform-tools:/root/bin
-
+ENV PATH ${PATH}:/opt/android-ndk-linux
 
 #
-# End of SDK installation
+# End of NDK installation
 #
 
