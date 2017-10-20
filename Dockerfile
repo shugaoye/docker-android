@@ -30,12 +30,11 @@ MAINTAINER Roger Ye <shugaoye@yahoo.com>
 # Beginning of installation
 #
 
-RUN echo y | android update sdk --no-ui --all --filter android-24 | grep 'package installed'
+RUN echo y | android update sdk --no-ui --all --filter android-23 | grep 'package installed'
 
-RUN echo y | android update sdk --no-ui --all --filter build-tools-24.0.3 | grep 'package installed'
-RUN echo y | android update sdk --no-ui --all --filter build-tools-24.0.2 | grep 'package installed'
-RUN echo y | android update sdk --no-ui --all --filter build-tools-24.0.1 | grep 'package installed'
-RUN echo y | android update sdk --no-ui --all --filter build-tools-24.0.0 | grep 'package installed'
+RUN echo y | android update sdk --no-ui --all --filter build-tools-23.0.3 | grep 'package installed'
+RUN echo y | android update sdk --no-ui --all --filter build-tools-23.0.2 | grep 'package installed'
+RUN echo y | android update sdk --no-ui --all --filter build-tools-23.0.1 | grep 'package installed'
 
 #
 # End of installation
