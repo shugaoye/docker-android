@@ -9,8 +9,9 @@ https://hub.docker.com/r/shugaoye/docker-android/
 
 # What include in this build
 
+This is the image with minSdkVersion of 18. Please don't use this as your working environment. 
+
 1. Android SDK - android-sdk_r24.4.1-linux
 2. Android NDK - android-ndk-r15c
 3. platform-tools
-4. android-18, android-26 and build tools 
-   (minSdkVersion:18 and compileSdkVersion:26)
+4. android-18 (minSdkVersion:18)
