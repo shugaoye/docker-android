@@ -27,8 +27,8 @@
 # Both can be defined in your environment, otherwise the below default values
 # will be used.
 
-TAG_NAME ?= android-26
-VERSION ?= 1.5
+TAG_NAME ?= android-26aosp
+VERSION ?= 1
 DOCKER = docker
 IMAGE = shugaoye/docker-android:$(TAG_NAME)
 VOL1 ?= $(HOME)/vol1

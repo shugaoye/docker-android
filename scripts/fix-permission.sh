@@ -12,11 +12,11 @@ chmod g+w *
 cd ${ANDROID_SDK_HOME}/platforms
 chmod g+w *
 
+chmod g+w ${ANDROID_SDK_HOME}
+chmod g+w ${ANDROID_SDK_HOME}/.android
 chmod g+w ${ANDROID_SDK_HOME}/extras/android/*
 chmod g+w ${ANDROID_SDK_HOME}/extras/google/*
 chmod g+w ${ANDROID_SDK_HOME}/platform-tools
 chmod g+w ${ANDROID_SDK_HOME}/tools
-chmod g+w ${ANDROID_SDK_HOME}/system-images/android-24/default/*
 
-chmod g+w ${ANDROID_SDK_HOME}/.android
 

@@ -14,3 +14,4 @@ https://hub.docker.com/r/shugaoye/docker-android/
 3. platform-tools
 4. android-18, android-26 and build tools 
    (minSdkVersion:18 and compileSdkVersion:26)
+5. Use with the second user aosp

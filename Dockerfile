@@ -22,21 +22,24 @@
 #******************************************************************************
 #
 
-FROM shugaoye/docker-android:android-18
+FROM shugaoye/docker-android:android-26
 
 MAINTAINER Roger Ye <shugaoye@yahoo.com>
 
-#
-# Beginning of installation
-#
+# Extras
+RUN echo y | android update sdk --no-ui --all --filter extra-android-m2repository | grep 'package installed'
+RUN echo y | android update sdk --no-ui --all --filter extra-google-m2repository | grep 'package installed'
+RUN echo y | android update sdk --no-ui --all --filter extra-google-google_play_services | grep 'package installed'
 
-RUN echo y | android update sdk --no-ui --all --filter android-26 | grep 'package installed'
+COPY licenses ${ANDROID_SDK_HOME}/licenses
 
-RUN echo y | android update sdk --no-ui --all --filter build-tools-26.0.2 | grep 'package installed'
-RUN echo y | android update sdk --no-ui --all --filter build-tools-26.0.1 | grep 'package installed'
-RUN echo y | android update sdk --no-ui --all --filter build-tools-26.0.0 | grep 'package installed'
+USER root
+   
+# Work in the build directory, repo is expected to be init'd here
+WORKDIR /home/aosp
 
-#
-# End of installation
-#
+COPY scripts/fix-permission.sh /root/fix-permission.sh
 
+RUN /root/fix-permission.sh
+
+ENTRYPOINT ["/root/docker_entrypoint.sh"]
