@@ -22,7 +22,7 @@
 #******************************************************************************
 #
 
-FROM shugaoye/docker-android:android-26
+FROM shugaoye/docker-android:android-25
 
 MAINTAINER Roger Ye <shugaoye@yahoo.com>
 
